@@ -29,7 +29,7 @@ import com.kannect.user.service.masters.entity.User;
 import com.kannect.user.service.masters.repository.RoleRepository;
 import com.kannect.user.service.masters.repository.UserRepository;
 import com.kannect.user.service.masters.service.UserService;
-import com.kannect.user.service.utils.S3Uploader;
+import com.kannect.user.service.utils.GcpStorageUploader;
 
 import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolation;
@@ -44,9 +44,10 @@ public class UserServiceImpl implements UserService {
 	private final UserRepository userRepository;
 	private final UserMapper userMapper;
 	private final PasswordEncoder passwordEncoder;
-	private final S3Uploader s3Service;
 	private final RoleRepository roleRepository;
 	private final Validator validator;
+	private final GcpStorageUploader gcpStorageUploader;
+
 	private static final List<String> VALID_IMAGE_TYPES = Arrays.asList("image/jpeg", "image/png", "image/jpg",
 			"image/gif", "image/webp");
 
@@ -92,11 +93,11 @@ public class UserServiceImpl implements UserService {
 	public UserResponseDTO registerUser(UserRegisterRequestDTO requestDTO, MultipartFile profilePhoto)
 			throws IOException, RequestValidationFailedException {
 		String profilePhotoUrl = null;
-		validateDTOAndFile(requestDTO,profilePhoto);
+		validateDTOAndFile(requestDTO, profilePhoto);
 
 		if (profilePhoto != null && !profilePhoto.isEmpty()) {
 			String fileName = "profile-photos/" + UUID.randomUUID() + "-" + profilePhoto.getOriginalFilename();
-			profilePhotoUrl = s3Service.uploadFile(profilePhoto, fileName);
+			profilePhotoUrl = gcpStorageUploader.uploadFile(profilePhoto, fileName);
 		}
 
 		String hashedPassword = passwordEncoder.encode(requestDTO.getPassword());
@@ -127,14 +128,14 @@ public class UserServiceImpl implements UserService {
 	public UserResponseDTO updateEmployeeProfile(Long id, EmployeeUpdateDTO dto, MultipartFile profilePhoto)
 			throws IOException, RequestValidationFailedException {
 		User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
-		validateDTOAndFile(dto,profilePhoto);
+		validateDTOAndFile(dto, profilePhoto);
 		user.setFirstName(dto.getFirstName());
 		user.setLastName(dto.getLastName());
 		String profilePhotoUrl = user.getProfilePhotoUrl();
 
 		if (profilePhoto != null && !profilePhoto.isEmpty()) {
 			String fileName = "profile-photos/" + UUID.randomUUID() + "-" + profilePhoto.getOriginalFilename();
-			profilePhotoUrl = s3Service.uploadFile(profilePhoto, fileName);
+			profilePhotoUrl = gcpStorageUploader.uploadFile(profilePhoto, fileName);
 			user.setProfilePhotoUrl(profilePhotoUrl);
 		}
 
@@ -150,13 +151,13 @@ public class UserServiceImpl implements UserService {
 	public UserResponseDTO updateUserByAdminOrHR(Long id, AdminHrUserUpdateDTO dto, MultipartFile profilePhoto)
 			throws IOException, RequestValidationFailedException {
 		User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
-		
-		validateDTOAndFile(dto,profilePhoto);
+
+		validateDTOAndFile(dto, profilePhoto);
 		String profilePhotoUrl = user.getProfilePhotoUrl();
 		user = userMapper.mapAdminHrUserUpdateDTOToUserEntity(dto, user);
 		if (profilePhoto != null && !profilePhoto.isEmpty()) {
 			String fileName = "profile-photos/" + UUID.randomUUID() + "-" + profilePhoto.getOriginalFilename();
-			profilePhotoUrl = s3Service.uploadFile(profilePhoto, fileName);
+			profilePhotoUrl = gcpStorageUploader.uploadFile(profilePhoto, fileName);
 			user.setProfilePhotoUrl(profilePhotoUrl);
 		}
 

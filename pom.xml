@@ -89,6 +89,12 @@
 			<groupId>jakarta.validation</groupId>
 			<artifactId>jakarta.validation-api</artifactId>
 		</dependency>
+		<!-- Google Cloud Storage SDK -->
+		<dependency>
+			<groupId>com.google.cloud</groupId>
+			<artifactId>google-cloud-storage</artifactId>
+			<version>2.27.0</version> <!-- or latest -->
+		</dependency>
 
 		<dependency>
 			<groupId>org.springdoc</groupId>
@@ -105,11 +111,11 @@
 		<dependency>
 			<groupId>software.amazon.awssdk</groupId>
 			<artifactId>s3</artifactId>
-			<version>2.25.14</version> 
+			<version>2.25.14</version>
 		</dependency>
 		<dependency>
 			<groupId>software.amazon.awssdk</groupId>
-			<artifactId>auth</artifactId> 
+			<artifactId>auth</artifactId>
 			<version>2.25.14</version>
 		</dependency>
 
