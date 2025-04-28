@@ -13,17 +13,17 @@ CREATE TABLE users IF NOT EXISTS(
     last_login TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS roles (
+CREATE TABLE  roles IF NOT EXISTS(
     id SERIAL PRIMARY KEY,
     role_name VARCHAR(50) UNIQUE NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS modules (
+CREATE TABLE  modules IF NOT EXISTS(
     id SERIAL PRIMARY KEY,
     module_name VARCHAR(50) UNIQUE NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS user_roles (
+CREATE TABLE  user_roles IF NOT EXISTS(
     user_id INTEGER NOT NULL,
     role_id INTEGER NOT NULL,
     PRIMARY KEY (user_id, role_id),
@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS user_roles (
     FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS wallet_transaction (
+CREATE TABLE wallet_transaction  IF NOT EXISTS (
     id SERIAL PRIMARY KEY,
     sender_id INTEGER  NULL,
     receiver_id INTEGER NOT NULL,
@@ -49,10 +49,10 @@ CREATE TABLE IF NOT EXISTS wallet_transaction (
 
 
 
-CREATE INDEX IF NOT EXISTS idx_user_email ON users(email);
-CREATE INDEX IF NOT EXISTS idx_user_name ON users(user_name);
-CREATE INDEX IF NOT EXISTS idx_user_roles_user_id ON user_roles(user_id);
-CREATE INDEX IF NOT EXISTS idx_user_roles_role_id ON user_roles(role_id);
-CREATE INDEX IF NOT EXISTS idx_wallet_transaction_sender_id ON wallet_transaction(sender_id);
-CREATE INDEX IF NOT EXISTS idx_wallet_transaction_receiver_id ON wallet_transaction(receiver_id);
-CREATE INDEX IF NOT EXISTS idx_wallet_transaction_module_id ON wallet_transaction(module_id);
+CREATE INDEX  idx_user_email IF NOT EXISTS ON users(email);
+CREATE INDEX  idx_user_name IF NOT EXISTS ON users(user_name);
+CREATE INDEX  idx_user_roles_user_id IF NOT EXISTS ON user_roles(user_id);
+CREATE INDEX  idx_user_roles_role_id IF NOT EXISTS ON user_roles(role_id);
+CREATE INDEX  idx_wallet_transaction_sender_id IF NOT EXISTS ON wallet_transaction(sender_id);
+CREATE INDEX  idx_wallet_transaction_receiver_id IF NOT EXISTS ON wallet_transaction(receiver_id);
+CREATE INDEX  idx_wallet_transaction_module_id IF NOT EXISTS ON wallet_transaction(module_id);
