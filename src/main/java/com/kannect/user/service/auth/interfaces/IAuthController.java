@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import com.kannect.user.service.dto.request.LoginRequestDTO;
 import com.kannect.user.service.dto.response.ErrorResponse;
 import com.kannect.user.service.dto.response.SuccessResponse;
+import com.kannect.user.service.exception.LoginFailedException;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -35,6 +36,6 @@ public interface IAuthController {
 			@ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
 					@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)) }) })
 	ResponseEntity<SuccessResponse> login(
-			@Valid @NotNull @Parameter(description = "Login details") LoginRequestDTO request);
+			@Valid @NotNull @Parameter(description = "Login details") LoginRequestDTO request) throws LoginFailedException;
 
 }

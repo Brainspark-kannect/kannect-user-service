@@ -13,6 +13,7 @@ import com.kannect.user.service.auth.interfaces.IAuthController;
 import com.kannect.user.service.auth.service.AuthService;
 import com.kannect.user.service.dto.request.LoginRequestDTO;
 import com.kannect.user.service.dto.response.SuccessResponse;
+import com.kannect.user.service.exception.LoginFailedException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -27,7 +28,7 @@ public class AuthController implements IAuthController{
 
     @Override
     @PostMapping("/login")
-    public ResponseEntity<SuccessResponse> login(@RequestBody LoginRequestDTO request) {
+    public ResponseEntity<SuccessResponse> login(@RequestBody LoginRequestDTO request) throws LoginFailedException {
 		return ResponseEntity.ok(new SuccessResponse(HttpStatus.OK.value(), HttpStatus.OK, "User LoggedIn",
 				authService.handleLogin(request)));
     }

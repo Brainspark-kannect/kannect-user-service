@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.kannect.user.service.auth.service.AuthService;
 import com.kannect.user.service.dto.request.LoginRequestDTO;
 import com.kannect.user.service.dto.response.LoginResponseDTO;
+import com.kannect.user.service.exception.LoginFailedException;
 import com.kannect.user.service.masters.entity.User;
 import com.kannect.user.service.masters.repository.UserRepository;
 import com.kannect.user.service.security.CustomUserDetailsService;
@@ -32,14 +32,14 @@ public class AuthServiceImpl implements AuthService {
 	private final DecryptionUtil decryptionUtil;
 
 	@Override
-	public LoginResponseDTO handleLogin(LoginRequestDTO request) {
+	public LoginResponseDTO handleLogin(LoginRequestDTO request) throws LoginFailedException {
 		String decryptedPassword = decryptionUtil.decrypt(request.getPassword());
 
 		User user = userRepository.findByUserName(request.getUserName())
 				.orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
 		if (!passwordEncoder.matches(decryptedPassword, user.getPassword())) {
-			throw new BadCredentialsException("Invalid credentials");
+			throw new LoginFailedException("Invalid credentials");
 		}
 
 		// Update last login
