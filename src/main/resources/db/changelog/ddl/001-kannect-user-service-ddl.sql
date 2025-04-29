@@ -1,4 +1,5 @@
-CREATE TABLE users IF NOT EXISTS(
+-- USERS TABLE
+CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
     email VARCHAR(100) UNIQUE NOT NULL,
     user_name VARCHAR(100) UNIQUE NOT NULL,
@@ -13,17 +14,20 @@ CREATE TABLE users IF NOT EXISTS(
     last_login TIMESTAMP
 );
 
-CREATE TABLE  roles IF NOT EXISTS(
+-- ROLES TABLE
+CREATE TABLE IF NOT EXISTS roles (
     id SERIAL PRIMARY KEY,
     role_name VARCHAR(50) UNIQUE NOT NULL
 );
 
-CREATE TABLE  modules IF NOT EXISTS(
+-- MODULES TABLE
+CREATE TABLE IF NOT EXISTS modules (
     id SERIAL PRIMARY KEY,
     module_name VARCHAR(50) UNIQUE NOT NULL
 );
 
-CREATE TABLE  user_roles IF NOT EXISTS(
+-- USER_ROLES TABLE (JOIN TABLE)
+CREATE TABLE IF NOT EXISTS user_roles (
     user_id INTEGER NOT NULL,
     role_id INTEGER NOT NULL,
     PRIMARY KEY (user_id, role_id),
@@ -31,28 +35,27 @@ CREATE TABLE  user_roles IF NOT EXISTS(
     FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE CASCADE
 );
 
-CREATE TABLE wallet_transaction  IF NOT EXISTS (
+-- WALLET TRANSACTIONS TABLE
+CREATE TABLE IF NOT EXISTS wallet_transaction (
     id SERIAL PRIMARY KEY,
-    sender_id INTEGER  NULL,
+    sender_id INTEGER,
     receiver_id INTEGER NOT NULL,
     amount INTEGER NOT NULL,
-    module_id INTEGER  NULL,
+    module_id INTEGER,
     type VARCHAR(100) NOT NULL,
     description TEXT,
     date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     specific_id INTEGER,
     FOREIGN KEY (sender_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (receiver_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (module_id) REFERENCES modules(id) ON DELETE CASCADE,
+    FOREIGN KEY (module_id) REFERENCES modules(id) ON DELETE CASCADE
 );
 
-
-
-
-CREATE INDEX  idx_user_email IF NOT EXISTS ON users(email);
-CREATE INDEX  idx_user_name IF NOT EXISTS ON users(user_name);
-CREATE INDEX  idx_user_roles_user_id IF NOT EXISTS ON user_roles(user_id);
-CREATE INDEX  idx_user_roles_role_id IF NOT EXISTS ON user_roles(role_id);
-CREATE INDEX  idx_wallet_transaction_sender_id IF NOT EXISTS ON wallet_transaction(sender_id);
-CREATE INDEX  idx_wallet_transaction_receiver_id IF NOT EXISTS ON wallet_transaction(receiver_id);
-CREATE INDEX  idx_wallet_transaction_module_id IF NOT EXISTS ON wallet_transaction(module_id);
+-- INDEXES
+CREATE INDEX IF NOT EXISTS idx_user_email ON users(email);
+CREATE INDEX IF NOT EXISTS idx_user_name ON users(user_name);
+CREATE INDEX IF NOT EXISTS idx_user_roles_user_id ON user_roles(user_id);
+CREATE INDEX IF NOT EXISTS idx_user_roles_role_id ON user_roles(role_id);
+CREATE INDEX IF NOT EXISTS idx_wallet_transaction_sender_id ON wallet_transaction(sender_id);
+CREATE INDEX IF NOT EXISTS idx_wallet_transaction_receiver_id ON wallet_transaction(receiver_id);
+CREATE INDEX IF NOT EXISTS idx_wallet_transaction_module_id ON wallet_transaction(module_id);
