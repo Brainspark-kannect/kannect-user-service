@@ -8,10 +8,10 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
+import com.kannect.user.service.auth.entity.Role;
+import com.kannect.user.service.auth.entity.User;
 import com.kannect.user.service.dto.request.AdminHrUserUpdateDTO;
 import com.kannect.user.service.dto.response.UserResponseDTO;
-import com.kannect.user.service.masters.entity.Role;
-import com.kannect.user.service.masters.entity.User;
 
 @Component
 public class UserMapper {

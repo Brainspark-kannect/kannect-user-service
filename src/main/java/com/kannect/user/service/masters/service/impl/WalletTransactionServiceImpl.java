@@ -5,13 +5,13 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.kannect.user.service.auth.entity.User;
+import com.kannect.user.service.auth.repository.UserRepository;
 import com.kannect.user.service.dto.WalletTransactionDTO;
 import com.kannect.user.service.dto.mapper.WalletTransactionMapper;
 import com.kannect.user.service.exception.RequestValidationFailedException;
 import com.kannect.user.service.exception.ResourceNotFoundException;
-import com.kannect.user.service.masters.entity.User;
 import com.kannect.user.service.masters.entity.WalletTransaction;
-import com.kannect.user.service.masters.repository.UserRepository;
 import com.kannect.user.service.masters.repository.WalletTransactionRepository;
 import com.kannect.user.service.masters.service.WalletTransactionService;
 

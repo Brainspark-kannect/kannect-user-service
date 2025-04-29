@@ -4,10 +4,10 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.kannect.user.service.auth.entity.Role;
 import com.kannect.user.service.dto.RoleDTO;
 import com.kannect.user.service.dto.mapper.RoleMapper;
 import com.kannect.user.service.exception.ResourceNotFoundException;
-import com.kannect.user.service.masters.entity.Role;
 import com.kannect.user.service.masters.repository.RoleRepository;
 import com.kannect.user.service.masters.service.RoleService;
 

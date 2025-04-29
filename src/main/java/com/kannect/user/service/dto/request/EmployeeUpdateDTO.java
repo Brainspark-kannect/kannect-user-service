@@ -16,7 +16,8 @@ public class EmployeeUpdateDTO {
 
     @NotBlank(message = "Last name must not be blank.")
     private String lastName;
+    
+    private String oldPassword;
 
-    @NotBlank(message = "Password must not be blank.")
     private String password;
 }

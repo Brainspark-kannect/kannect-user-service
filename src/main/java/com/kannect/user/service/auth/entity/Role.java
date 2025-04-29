@@ -1,4 +1,4 @@
-package com.kannect.user.service.masters.entity;
+package com.kannect.user.service.auth.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

@@ -9,12 +9,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.kannect.user.service.auth.entity.User;
+import com.kannect.user.service.auth.repository.UserRepository;
 import com.kannect.user.service.auth.service.AuthService;
 import com.kannect.user.service.dto.request.LoginRequestDTO;
 import com.kannect.user.service.dto.response.LoginResponseDTO;
 import com.kannect.user.service.exception.LoginFailedException;
-import com.kannect.user.service.masters.entity.User;
-import com.kannect.user.service.masters.repository.UserRepository;
 import com.kannect.user.service.security.CustomUserDetailsService;
 import com.kannect.user.service.utils.DecryptionUtil;
 import com.kannect.user.service.utils.JwtUtil;
@@ -37,6 +37,10 @@ public class AuthServiceImpl implements AuthService {
 
 		User user = userRepository.findByUserName(request.getUserName())
 				.orElseThrow(() -> new UsernameNotFoundException("User not found"));
+		
+		if (!user.getActive()) {
+			throw new LoginFailedException("User account is not active. Please contact administrator or hr.");
+		}
 
 		if (!passwordEncoder.matches(decryptedPassword, user.getPassword())) {
 			throw new LoginFailedException("Invalid credentials");

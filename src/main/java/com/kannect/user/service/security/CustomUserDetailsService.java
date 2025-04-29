@@ -8,8 +8,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.kannect.user.service.masters.entity.User;
-import com.kannect.user.service.masters.repository.UserRepository;
+import com.kannect.user.service.auth.entity.User;
+import com.kannect.user.service.auth.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 

@@ -1,3 +1,5 @@
 databaseChangeLog:
   - include:
       file: classpath:/db/changelog/ddl/001-kannect-user-service-ddl.sql
+  - include:
+      file: classpath:/db/changelog/dml/001-kannect-user-service-dml.sql

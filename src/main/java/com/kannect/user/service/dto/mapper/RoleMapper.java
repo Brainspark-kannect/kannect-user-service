@@ -6,8 +6,8 @@ import java.util.List;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
+import com.kannect.user.service.auth.entity.Role;
 import com.kannect.user.service.dto.RoleDTO;
-import com.kannect.user.service.masters.entity.Role;
 
 @Component
 public class RoleMapper {

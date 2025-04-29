@@ -1,4 +1,4 @@
-package com.kannect.user.service.masters.entity;
+package com.kannect.user.service.auth.entity;
 
 import java.time.LocalDateTime;
 import java.util.Set;

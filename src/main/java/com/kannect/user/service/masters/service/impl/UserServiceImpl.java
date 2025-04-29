@@ -17,6 +17,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.kannect.user.service.auth.entity.Role;
+import com.kannect.user.service.auth.entity.User;
+import com.kannect.user.service.auth.repository.UserRepository;
 import com.kannect.user.service.dto.mapper.UserMapper;
 import com.kannect.user.service.dto.request.AdminHrUserUpdateDTO;
 import com.kannect.user.service.dto.request.EmployeeUpdateDTO;
@@ -24,10 +27,8 @@ import com.kannect.user.service.dto.request.UserRegisterRequestDTO;
 import com.kannect.user.service.dto.response.UserResponseDTO;
 import com.kannect.user.service.exception.RequestValidationFailedException;
 import com.kannect.user.service.exception.ResourceNotFoundException;
-import com.kannect.user.service.masters.entity.Role;
-import com.kannect.user.service.masters.entity.User;
 import com.kannect.user.service.masters.repository.RoleRepository;
-import com.kannect.user.service.masters.repository.UserRepository;
+import com.kannect.user.service.masters.service.EmailService;
 import com.kannect.user.service.masters.service.UserService;
 import com.kannect.user.service.utils.GcpStorageUploader;
 
@@ -47,6 +48,7 @@ public class UserServiceImpl implements UserService {
 	private final RoleRepository roleRepository;
 	private final Validator validator;
 	private final GcpStorageUploader gcpStorageUploader;
+	private final EmailService emailService;
 
 	private static final List<String> VALID_IMAGE_TYPES = Arrays.asList("image/jpeg", "image/png", "image/jpg",
 			"image/gif", "image/webp");
@@ -114,6 +116,9 @@ public class UserServiceImpl implements UserService {
 
 		user = userRepository.save(user);
 
+		emailService.sendEmail(List.of(user.getEmail()), null, "Welcome to Kannect!", "Hello " + user.getFirstName()
+				+ ",\n\nYour account has been successfully created. Awaiting HR activation.\n\nRegards,\nKannect Team");
+
 		return userMapper.mapToUserResponseDTO(user);
 	}
 
@@ -128,9 +133,25 @@ public class UserServiceImpl implements UserService {
 	public UserResponseDTO updateEmployeeProfile(Long id, EmployeeUpdateDTO dto, MultipartFile profilePhoto)
 			throws IOException, RequestValidationFailedException {
 		User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+		if (StringUtils.isNotBlank(dto.getOldPassword()) && StringUtils.isNotBlank(dto.getPassword())) {
+			// Compare with current user password
+			if (!StringUtils.equals(passwordEncoder.encode(dto.getOldPassword()), user.getPassword())) {
+				throw new IllegalArgumentException("Old password does not match.");
+			}
+
+			if (StringUtils.isNotBlank(dto.getPassword())) {
+				user.setPassword(passwordEncoder.encode(dto.getPassword()));
+			}
+		}
+
 		validateDTOAndFile(dto, profilePhoto);
-		user.setFirstName(dto.getFirstName());
-		user.setLastName(dto.getLastName());
+		if (StringUtils.isNotBlank(dto.getFirstName())) {
+			user.setFirstName(dto.getFirstName());
+		}
+		if (StringUtils.isNotBlank(dto.getLastName())) {
+			user.setLastName(dto.getLastName());
+		}
+
 		String profilePhotoUrl = user.getProfilePhotoUrl();
 
 		if (profilePhoto != null && !profilePhoto.isEmpty()) {
@@ -139,10 +160,11 @@ public class UserServiceImpl implements UserService {
 			user.setProfilePhotoUrl(profilePhotoUrl);
 		}
 
-		if (dto.getPassword() != null && !dto.getPassword().isBlank()) {
-			user.setPassword(passwordEncoder.encode(dto.getPassword()));
-		}
 		user = userRepository.save(user);
+
+		emailService.sendEmail(List.of(user.getEmail()), null, "Profile Updated Successfully", "Hi "
+				+ user.getFirstName() + ",\n\nYour profile has been successfully updated.\n\nRegards,\nKannect Team");
+
 		return userMapper.mapToUserResponseDTO(user);
 	}
 
@@ -228,6 +250,9 @@ public class UserServiceImpl implements UserService {
 		List<User> users = userRepository.findAllById(userIds);
 		for (User user : users) {
 			user.setActive(true);
+			emailService.sendEmail(List.of(user.getEmail()), null, "Your Account is Now Active", "Dear "
+					+ user.getFirstName()
+					+ ",\n\nYour account has been activated by HR. You can now log in and access all features.\n\nRegards,\nKannect Team");
 		}
 		users = userRepository.saveAll(users);
 
