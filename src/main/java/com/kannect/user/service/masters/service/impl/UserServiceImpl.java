@@ -30,7 +30,7 @@ import com.kannect.user.service.exception.ResourceNotFoundException;
 import com.kannect.user.service.masters.repository.RoleRepository;
 import com.kannect.user.service.masters.service.EmailService;
 import com.kannect.user.service.masters.service.UserService;
-import com.kannect.user.service.utils.GcpStorageUploader;
+import com.kannect.user.service.utils.CloudinaryUploader;
 
 import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolation;
@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
 	private final PasswordEncoder passwordEncoder;
 	private final RoleRepository roleRepository;
 	private final Validator validator;
-	private final GcpStorageUploader gcpStorageUploader;
+	private final CloudinaryUploader cloudinaryUploader;
 	private final EmailService emailService;
 
 	private static final List<String> VALID_IMAGE_TYPES = Arrays.asList("image/jpeg", "image/png", "image/jpg",
@@ -99,7 +99,7 @@ public class UserServiceImpl implements UserService {
 
 		if (profilePhoto != null && !profilePhoto.isEmpty()) {
 			String fileName = "profile-photos/" + UUID.randomUUID() + "-" + profilePhoto.getOriginalFilename();
-			profilePhotoUrl = gcpStorageUploader.uploadFile(profilePhoto, fileName);
+			profilePhotoUrl = cloudinaryUploader.uploadFile(profilePhoto, fileName);
 		}
 
 		String hashedPassword = passwordEncoder.encode(requestDTO.getPassword());
@@ -156,7 +156,7 @@ public class UserServiceImpl implements UserService {
 
 		if (profilePhoto != null && !profilePhoto.isEmpty()) {
 			String fileName = "profile-photos/" + UUID.randomUUID() + "-" + profilePhoto.getOriginalFilename();
-			profilePhotoUrl = gcpStorageUploader.uploadFile(profilePhoto, fileName);
+			profilePhotoUrl = cloudinaryUploader.uploadFile(profilePhoto, fileName);
 			user.setProfilePhotoUrl(profilePhotoUrl);
 		}
 
@@ -179,7 +179,7 @@ public class UserServiceImpl implements UserService {
 		user = userMapper.mapAdminHrUserUpdateDTOToUserEntity(dto, user);
 		if (profilePhoto != null && !profilePhoto.isEmpty()) {
 			String fileName = "profile-photos/" + UUID.randomUUID() + "-" + profilePhoto.getOriginalFilename();
-			profilePhotoUrl = gcpStorageUploader.uploadFile(profilePhoto, fileName);
+			profilePhotoUrl = cloudinaryUploader.uploadFile(profilePhoto, fileName);
 			user.setProfilePhotoUrl(profilePhotoUrl);
 		}
 
