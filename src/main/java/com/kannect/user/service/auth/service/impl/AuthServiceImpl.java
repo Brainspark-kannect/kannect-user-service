@@ -35,7 +35,7 @@ public class AuthServiceImpl implements AuthService {
 	public LoginResponseDTO handleLogin(LoginRequestDTO request) throws LoginFailedException {
 		String decryptedPassword = decryptionUtil.decrypt(request.getPassword());
 
-		User user = userRepository.findByUserName(request.getUserName())
+		User user = userRepository.findByUserNameAndActive(request.getUserName(),true)
 				.orElseThrow(() -> new UsernameNotFoundException("User not found"));
 		
 		if (!user.getActive()) {
