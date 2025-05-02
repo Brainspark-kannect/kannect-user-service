@@ -6,10 +6,12 @@ import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class UserResponseDTO {
     private Long id;
     private String email;
@@ -20,7 +22,7 @@ public class UserResponseDTO {
     private String techStack;
     private String profilePhotoUrl;
     private Set<String> roleNames;
-    private Boolean activatedByHr;
+    private Boolean active;
     private Integer walletBalance;
     private LocalDateTime lastLogin;
 }

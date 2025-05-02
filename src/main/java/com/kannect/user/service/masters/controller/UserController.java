@@ -54,7 +54,6 @@ public class UserController implements IUserContoller {
 	}
 
 	@Override
-	@PreAuthorize("hasAnyRole('ADMIN', 'HR', 'EMPLOYEE')")
 	@PostMapping("/register")
 	public ResponseEntity<SuccessResponse> registerUser(@RequestPart("data") String dto,@RequestPart("file")MultipartFile  profilePicture)
 			throws IOException, RequestValidationFailedException {
