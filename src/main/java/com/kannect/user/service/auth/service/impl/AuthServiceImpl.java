@@ -37,7 +37,7 @@ public class AuthServiceImpl implements AuthService {
 
 		User user = userRepository.findByUserName(request.getUserName())
 				.orElseThrow(() -> new UsernameNotFoundException("User not found"));
-		
+
 		if (!user.getActive()) {
 			throw new LoginFailedException("User account is not active. Please contact administrator or hr.");
 		}
@@ -58,7 +58,8 @@ public class AuthServiceImpl implements AuthService {
 
 		}).collect(Collectors.toSet());
 
-		return new LoginResponseDTO(token, user.getUserName(), roles);
+		return new LoginResponseDTO(user.getId(), user.getLastLogin(), user.getFirstName(), user.getLastName(), token,
+				user.getUserName(), roles);
 	}
 
 }

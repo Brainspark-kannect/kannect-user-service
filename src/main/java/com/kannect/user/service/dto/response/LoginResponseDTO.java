@@ -1,5 +1,6 @@
 package com.kannect.user.service.dto.response;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 import lombok.AllArgsConstructor;
@@ -10,7 +11,11 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class LoginResponseDTO {
-    private String token;
-    private String userName;
-    private Set<String> roleNames;
+	private Long id;
+	private LocalDateTime lastLogin;
+	private String firstName;
+	private String lastName;
+	private String token;
+	private String userName;
+	private Set<String> roleNames;
 }
