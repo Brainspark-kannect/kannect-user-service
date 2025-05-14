@@ -33,7 +33,7 @@ public class AuthServiceImpl implements AuthService {
 
 	@Override
 	public LoginResponseDTO handleLogin(LoginRequestDTO request) throws LoginFailedException {
-		String decryptedPassword = decryptionUtil.decrypt(request.getPassword());
+		String decryptedPassword = request.getPassword();
 
 		User user = userRepository.findByUserName(request.getUserName())
 				.orElseThrow(() -> new UsernameNotFoundException("User not found"));
