@@ -35,7 +35,7 @@ import com.kannect.user.service.masters.service.UserService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/masters/user")
+@RequestMapping("/user/masters/user")
 @Validated
 @CrossOrigin(origins = "*")
 @RequiredArgsConstructor

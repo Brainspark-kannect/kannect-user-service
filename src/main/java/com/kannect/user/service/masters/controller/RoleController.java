@@ -21,7 +21,7 @@ import com.kannect.user.service.masters.service.RoleService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/masters/role")
+@RequestMapping("/user/masters/role")
 @Validated
 @CrossOrigin(origins = "*")
 @RequiredArgsConstructor

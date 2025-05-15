@@ -18,7 +18,7 @@ import com.kannect.user.service.exception.LoginFailedException;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/user/auth")
 @Validated
 @CrossOrigin(origins = "*")
 @RequiredArgsConstructor

@@ -20,7 +20,7 @@ import com.kannect.user.service.masters.service.WalletTransactionService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/masters/tranctions")
+@RequestMapping("/user/masters/transactions")
 @Validated
 @CrossOrigin(origins = "*")
 @RequiredArgsConstructor

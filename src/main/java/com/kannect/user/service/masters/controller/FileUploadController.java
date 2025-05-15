@@ -20,7 +20,7 @@ import com.kannect.user.service.utils.CloudinaryUploader;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/masters/file")
+@RequestMapping("/user/masters/file")
 @Validated
 @CrossOrigin(origins = "*")
 @RequiredArgsConstructor
